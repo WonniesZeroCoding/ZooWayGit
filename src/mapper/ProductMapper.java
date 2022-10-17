@@ -33,9 +33,6 @@ public class ProductMapper {
 		}finally {
 			if(rs!=null) {rs.close();}
 			if(st!=null) {st.close();}
-			if(conn!=null) {conn.close();}
-			
-			
 		}
 		return list;
 		

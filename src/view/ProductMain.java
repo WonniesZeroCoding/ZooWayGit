@@ -18,6 +18,8 @@ public class ProductMain {
 		int menuNum = Integer.parseInt(br.readLine());
 		if(menuNum ==1) {
 			new ProductDAO().selectProduct();
+			OrderMain.main(args);
+			
 			//리스트 출력 메소드 가져오기
 		}else if(menuNum==2) {
 			//메인 메뉴로 보내주기
