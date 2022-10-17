@@ -43,7 +43,6 @@ public class EmployeeMapper {
 			try {
 				if (rs != null) rs.close();
 				if(pstmt!=null) pstmt.close();
-				if(conn != null) conn.close();
 			} catch (Exception e2) {e2.printStackTrace();}
 		}//try 끝
 		
@@ -76,7 +75,6 @@ public class EmployeeMapper {
 			try {
 				if (rs != null) rs.close();
 				if(pstmt!=null) pstmt.close();
-				if(conn != null) conn.close();
 			} catch (Exception e2) {e2.printStackTrace();}
 		}//try 끝
 		
@@ -86,7 +84,7 @@ public class EmployeeMapper {
 	public void employeeDelete(int emnum) {
 		Connection conn= DBAction.getInstance().getConnection();
 		PreparedStatement pstmt=null;
-		
+		System.out.println("입력한 사원번호"+emnum);
 		try {
 			pstmt=conn.prepareStatement("UPDATE EMPLOYEE SET ESTATUS=1 WHERE EMNUM=?");
 			pstmt.setInt(1, emnum);
@@ -98,7 +96,6 @@ public class EmployeeMapper {
 		}finally {
 			try {
 				if(pstmt!=null) pstmt.close();
-				if(conn != null) conn.close();
 			} catch (Exception e2) {e2.printStackTrace();}
 		}//try 끝
 		
