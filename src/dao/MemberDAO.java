@@ -7,5 +7,5 @@ import dto.MemberDTO;
 public interface MemberDAO {
 	
 	public MemberDTO MemberLogin() throws IOException;
-  
+  // something is change?
 }      
