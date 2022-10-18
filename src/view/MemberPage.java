@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import dao.MemberDAOImpl;
 import dto.MemberDTO;
 
 public class MemberPage {
@@ -11,9 +12,10 @@ public class MemberPage {
 	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
 	public void memberPageView(MemberDTO member) throws NumberFormatException, IOException {
+		
 		System.out.println(member.getMname()+"님 반갑습니다!(´･ω･`)");
-				
 		System.out.println("");
+		MemberDAOImpl dao=new MemberDAOImpl();
 		
 		boolean run = true;
 		do {System.out.println("");
