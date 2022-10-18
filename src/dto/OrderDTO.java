@@ -16,4 +16,6 @@ public class OrderDTO {
 	private int pnum; //모델번호
 	private int polprice; //렌탈비
 	private int ostatus; //주문 status (방문점검인지 자가점검인지)
+	
+	private String tcontent; //주문내역 같은거 할떄 tnum 대신에 tcontent 쓴다 
 }

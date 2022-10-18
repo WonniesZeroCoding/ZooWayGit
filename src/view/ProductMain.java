@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import dao.ProductDAO;
 
 public class ProductMain {
-	public static void main(String[] args) throws NumberFormatException, IOException, SQLException {
+	public static void main(String[] args) throws Exception {
 		System.out.println(" -----------------------------------------------");
 		System.out.println("|           1. 제품목록 2. 뒤로                                   |");
 		System.out.println(" -----------------------------------------------");
