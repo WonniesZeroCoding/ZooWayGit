@@ -320,10 +320,7 @@ public class OrderMapper {
 				if(rs!=null) {rs.close();}
 				if(pstmt!=null) {pstmt.close();}
 			}
-		
-		
-		
-		
+
 		return Onum;
 	}
 }
