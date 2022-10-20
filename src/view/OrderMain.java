@@ -14,16 +14,12 @@ import functions.proNumCheck;
 import mapper.ProductMapper;
 
 public class OrderMain {
-	
-	MemberDTO member;
-	
-	
-	public OrderMain(MemberDTO member) {
-		this.member = member;
-	}
+	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
 	
 	
-	public static void main(String[] args) throws Exception {
+	
+	public OrderMain(MemberDTO member) throws Exception {
 		int num = 0; //
 		int homeNum = 0; //자가인지,방문인지
 		String visitDate; //방문날짜
@@ -32,7 +28,6 @@ public class OrderMain {
 		
 		
 		
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		System.out.println("주문할 정수기 번호를 선택해주세요");
 		//존재하는 정수기 번호 확인
 		System.out.print(">>");
@@ -98,7 +93,7 @@ public class OrderMain {
 	    	
 	    	System.out.println("최종 insert 전 확인");
 	    	
-	    	int mnum = 4;
+	    	int mnum = member.getMnum();
 	    	System.out.println(visitDate);//방문날짜
 	    	System.out.println(timeNum);//시간번호
 	    	System.out.println(arr2[0]);//개월수
@@ -107,14 +102,31 @@ public class OrderMain {
 	    	System.out.println(homeNum); //자가 or 방문
 	    	
 	    	new OrderDAO().insertOrder(mnum,visitDate,timeNum,arr2[0],num,arr2[1],homeNum);
-	    	//VISIT 테이블에 추가해주기 
 	    	//신청확인내역 띄워주기
+	    	
+	    	
+	    	
 	    	//신청시 상품의 재고 -1
 	    
 	    		    	
+	    	
+	    	
+	    	
 	    	///이후에 이제.... 그... 기사한테 메세지 보내는 거?? ㅋ
 	    
-
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+		
+		
 	}
+	
+
+
 
 }

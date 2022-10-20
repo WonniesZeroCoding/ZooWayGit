@@ -6,11 +6,15 @@ import java.io.InputStreamReader;
 import java.sql.SQLException;
 
 import dao.ProductDAO;
+import dto.MemberDTO;
 
 public class ProductMain {
-	public static void main(String[] args) throws Exception {
+	
+	
+	
+	public ProductMain(MemberDTO member) throws Exception {
 		System.out.println(" -----------------------------------------------");
-		System.out.println("|1. 제품목록 0. 뒤로                                   |");
+		System.out.println("|           1. 제품목록 2. 뒤로                                   ");
 		System.out.println(" -----------------------------------------------");
 		while(true) {
 		System.out.print("숫자 입력 >>");
@@ -18,8 +22,8 @@ public class ProductMain {
 		int menuNum = Integer.parseInt(br.readLine());
 		if(menuNum ==1) {
 			new ProductDAO().selectProduct();
-			OrderMain.main(args);
-			
+			new OrderMain(member);
+			break;
 			//리스트 출력 메소드 가져오기
 		}else if(menuNum==2) {
 			//메인 메뉴로 보내주기
