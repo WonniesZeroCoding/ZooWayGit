@@ -299,5 +299,31 @@ public class OrderMapper {
 			}
 		}
 	}
-
+	public int selectOrderNum(int mnum) throws SQLException {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int Onum = 0;
+			try {
+				String SQL = "select onum from `ORDER` where mnum =?";
+				conn = DBAction.getInstance().getConnection();
+				pstmt = conn.prepareStatement(SQL);
+				pstmt.setInt(1, mnum);
+				rs = pstmt.executeQuery();
+				while(rs.next()) {
+					Onum = rs.getInt("onum");
+				}
+			}catch(Exception e) {
+				System.out.println("selectOrderNum오류");
+				throw e;
+			}finally {
+				if(rs!=null) {rs.close();}
+				if(pstmt!=null) {pstmt.close();}
+			}
+		
+		
+		
+		
+		return Onum;
+	}
 }

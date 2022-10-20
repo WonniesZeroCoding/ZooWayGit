@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 
 import dto.MemberDTO;
 
@@ -228,7 +230,58 @@ public class MemberMapper {
 			}
 			return 0;
 		}
-	
+		//hamsik~ 모든 회원 전부 가져오기 + address한글로
+				public ArrayList<MemberDTO> selectAllMemberAdmin() throws SQLException {
+					Connection conn = null;
+					Statement st = null;
+					ResultSet rs = null;
+					ArrayList<MemberDTO> list = new ArrayList<MemberDTO>();
+					try {
+						String SQL = "select m.*,s.address from MEMBER m inner join SEOULADDR s on m.maddress1 = s.addrnum;";
+						conn = DBAction.getInstance().getConnection();
+						st = conn.createStatement();
+						rs = st.executeQuery(SQL);
+						while(rs.next()) {
+						int mNum = rs.getInt("mnum");
+						String mId = rs.getString("mid");
+						String mPw = rs.getString("mpw");
+						String mName = rs.getString("mname");
+						String mPhone = rs.getString("mphone");
+						String address1 = rs.getString("address");
+						String address2 = rs.getString("maddress2");
+						int mstatus = rs.getInt("mstatus");
+						int ZCP = rs.getInt("ZOOCAREPLUS");
+							
+						list.add(new MemberDTO(mNum,mId,mPw,mName,mPhone,address1,address2,mstatus,ZCP));
+						}
+					}catch(Exception e) {
+						System.out.println("selectAllMemberAdmin 오류");
+						throw e;
+					}finally {
+						if(rs!=null) {rs.close();}
+						if(st!=null) {st.close();}
+					}
+					return list;
+				}
+				//hamsik = > 회원 한명 탈퇴 => status 바꿔주기
+				public void deleteMemberAdmin(int num) throws Exception{
+					Connection conn = null;
+					PreparedStatement pstmt = null;
+					try {
+						String SQL = "update MEMBER set mstatus = 0 where mnum = ?";
+						conn = DBAction.getInstance().getConnection();
+						pstmt = conn.prepareStatement(SQL);
+						pstmt.setInt(1, num);
+						pstmt.executeUpdate();
+					}catch(Exception e) {
+						System.out.println("deleteMemberAdmin 오류");
+						throw e;
+					}finally {
+						if(pstmt!=null) {pstmt.close();}
+					}
+					
+				}
+			
 	
 	
 }

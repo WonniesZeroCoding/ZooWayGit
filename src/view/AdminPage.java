@@ -36,7 +36,8 @@ public class AdminPage {
 					productManagementPage.productMangement();
 					break;
 				case 2:// 회원관리				
-					
+					new memberManagementPage();
+
 					break;
 				case 3:// 사원관리
 					employeeManagementPage.employeeManagement();

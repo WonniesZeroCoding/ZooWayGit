@@ -3,6 +3,7 @@ package dao;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -162,5 +163,31 @@ public class MemberDAOImpl {
 		}
 		return check;
 	}
-	
+	//경식 -> 모든 멤버 가져오기 	
+		public void selectMemberAdmin() throws Exception{
+			ArrayList<MemberDTO> list = new ArrayList<MemberDTO>(); 		
+			list = new MemberMapper().selectAllMemberAdmin(); 		
+			System.out.println( 				"-----------------------------------------------------------------------------------------------"); 
+			System.out.println("회원번호\t\t아이디\t\t\t이름\t\t전화번호\t\t\t회원상태\t\t주캐플\t\t구\t\t\t상세주소");
+			System.out.println( 				"-----------------------------------------------------------------------------------------------"); 
+
+			for (int i = 0; i < list.size(); i++) { 			
+			System.out.println(list.get(i).getMnum() + "\t\t"+list.get(i).getMid() +"\t\t\t"+list.get(i).getMname()+"\t\t"+list.get(i).getMphone()+"\t\t"+list.get(i).getMstatus()+"\t\t"+list.get(i).getZOOCAREPLUS()+"\t\t"+list.get(i).getMaddress1()+"\t\t\t"+list.get(i).getMaddress2()); 		}
+			System.out.println( 				"-----------------------------------------------------------------------------------------------"); 		 	} 
+		//경식 -> 멤버 삭제 	
+		public void deletMemberAdmin() throws Exception{ 
+			selectMemberAdmin();
+			System.out.println("삭제할 회원번호를 입력하세요");
+			System.out.print(">>");
+			int num = Integer.parseInt(br.readLine());
+			boolean result  = new functions.memNumCheck().memberCheck(num);
+			while(!result) {
+				System.out.println("존재하지 않는 회원번호입니다. 다시 입력해 주세요");
+				System.out.print(">>");
+				num = Integer.parseInt(br.readLine());
+				result  = new functions.memNumCheck().memberCheck(num);
+			}
+			new MemberMapper().deleteMemberAdmin(num);
+		
+		}
 }
