@@ -92,11 +92,11 @@ public class OrderMapper {
       
       return list;
    }
-   public void insertOrder(int mnum,Date date,int tnum,int poldate,int pnum,int polprice,int ostatus)throws Exception{
+   public void insertOrder(int mnum,Date date,int tnum,int poldate,int pnum,int polprice,int ostatus,Date endDate)throws Exception{
       Connection conn = null;
       PreparedStatement pstmt = null;
       try {
-         String SQL = "insert into `ORDER` values(onum,?,?,?,?,?,?,?)";
+         String SQL = "insert into `ORDER` values(onum,?,?,?,?,?,?,?,?)";
          conn = DBAction.getInstance().getConnection();
          pstmt = conn.prepareStatement(SQL);
          pstmt.setInt(1, mnum);
@@ -106,6 +106,7 @@ public class OrderMapper {
          pstmt.setInt(5, pnum);
          pstmt.setInt(6, polprice);
          pstmt.setInt(7, ostatus);
+         pstmt.setDate(8, endDate);
          pstmt.executeUpdate();
       }catch(Exception e) {
          System.out.println("insertOrder 오류");

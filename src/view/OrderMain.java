@@ -9,6 +9,7 @@ import java.util.Calendar;
 
 import dao.OrderDAO;
 import dto.MemberDTO;
+import dto.OrderDTO;
 import functions.calendar;
 import functions.proNumCheck;
 import mapper.ProductMapper;
@@ -103,8 +104,12 @@ public class OrderMain {
 	    	
 	    	new OrderDAO().productMinus(num); //재고 -
 	    	
-	    	new OrderDAO().insertOrder(mnum,visitDate,timeNum,arr2[0],num,arr2[1],homeNum); //주문테이블에 추가
-
+	    	OrderDTO order = new OrderDTO(visitDate,arr2[0]);
+	    	
+	    	String endDate = new functions.calendar().CompareDate(order);
+	    	
+	    	new OrderDAO().insertOrder(mnum,visitDate,timeNum,arr2[0],num,arr2[1],homeNum,endDate); //주문테이블에 추가
+	    	
 	    	new OrderDAO().showResult(mnum, num); // 신청확인내역 띄워주기
 	    		    	
 	    	

@@ -48,9 +48,10 @@ public class OrderDAO {
 		
 	}
 	
-	public void insertOrder(int mnum,String date,int tnum,int poldate,int pnum,int polprice,int ostatus) throws Exception{
+	public void insertOrder(int mnum,String date,int tnum,int poldate,int pnum,int polprice,int ostatus,String endDate) throws Exception{
 		 Date newDate = Date.valueOf(date);
-		 new OrderMapper().insertOrder(mnum, newDate, tnum, poldate, pnum, polprice, ostatus);
+		 Date newEndDate = Date.valueOf(endDate);
+		 new OrderMapper().insertOrder(mnum, newDate, tnum, poldate, pnum, polprice, ostatus,newEndDate);
 	}
 	
 	public void showResult(int mnum,int pnum) throws Exception {
