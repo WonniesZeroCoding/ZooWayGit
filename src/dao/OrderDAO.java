@@ -3,8 +3,10 @@ package dao;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
+import dto.OrderDTO;
 import dto.PolicyDTO;
 import mapper.OrderMapper;
 
@@ -49,8 +51,38 @@ public class OrderDAO {
 	public void insertOrder(int mnum,String date,int tnum,int poldate,int pnum,int polprice,int ostatus) throws Exception{
 		 Date newDate = Date.valueOf(date);
 		 new OrderMapper().insertOrder(mnum, newDate, tnum, poldate, pnum, polprice, ostatus);
-		 
+	}
+	
+	public void showResult(int mnum,int pnum) throws Exception {
+		OrderDTO order = new OrderMapper().selectResult(mnum, pnum);
 		
+		System.out.println(" -----------------------------------------------");
+		System.out.println("|\t\t주문 내역");
+		System.out.println("|주문번호 : "+order.getOnum());
+		System.out.println("|주문상품 : "+order.getPname());
+		System.out.println("|주문기간 : "+order.getPoldate()+"개월");
+		if(order.getOstatus()==1) {
+		System.out.println("|점검상태 : 방문");
+		}else {
+		System.out.println("|점검상태 : 자가");
+		}
+		System.out.println("|방문일시 : "+order.getVdate()+"일"+order.getTcontent()+"시");
+		System.out.println(" -----------------------------------------------");
+		
+		
+		
+		
+	}
+
+	public void productMinus(int num) throws Exception {
+		int count =new OrderMapper().selectProCount(num);//count 가 1일 경우 status 가 0 이 되게 만든다.
+		if(count ==1) { //제품이 하나 남았을 경우
+			int newCount = 0;
+			new OrderMapper().MinusCountAndStatus(num,newCount);
+		}else {
+			int newCount = count-1;
+			new OrderMapper().MinusCount(num,newCount);
+		}
 	}
 	
 	

@@ -91,23 +91,21 @@ public class OrderMain {
 	    	
 	    	
 	    	
-	    	System.out.println("최종 insert 전 확인");
+	    	//System.out.println("최종 insert 전 확인");
 	    	
 	    	int mnum = member.getMnum();
-	    	System.out.println(visitDate);//방문날짜
-	    	System.out.println(timeNum);//시간번호
-	    	System.out.println(arr2[0]);//개월수
-	    	System.out.println(num);//상품번호
-	    	System.out.println(arr2[1]);//개월당 금액
-	    	System.out.println(homeNum); //자가 or 방문
+//	    	System.out.println(visitDate);//방문날짜
+//	    	System.out.println(timeNum);//시간번호
+//	    	System.out.println(arr2[0]);//개월수
+//	    	System.out.println(num);//상품번호
+//	    	System.out.println(arr2[1]);//개월당 금액
+//	    	System.out.println(homeNum); //자가 or 방문
 	    	
-	    	new OrderDAO().insertOrder(mnum,visitDate,timeNum,arr2[0],num,arr2[1],homeNum);
-	    	//신청확인내역 띄워주기
+	    	new OrderDAO().productMinus(num); //재고 -
 	    	
-	    	
-	    	
-	    	//신청시 상품의 재고 -1
-	    
+	    	new OrderDAO().insertOrder(mnum,visitDate,timeNum,arr2[0],num,arr2[1],homeNum); //주문테이블에 추가
+
+	    	new OrderDAO().showResult(mnum, num); // 신청확인내역 띄워주기
 	    		    	
 	    	
 	    	
