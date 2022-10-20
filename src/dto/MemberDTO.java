@@ -16,4 +16,5 @@ public class MemberDTO {
 	private String maddress1; //회원주소1
 	private String maddress2; //회원주소2
 	private int mstatus; //회원상태(탈퇴했는지, 안했는지)
+	private int ZOOCAREPLUS; //즈.케어.플러스.
 }

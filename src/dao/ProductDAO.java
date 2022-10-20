@@ -1,6 +1,7 @@
 package dao;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import mapper.ProductMapper;
 
 public class ProductDAO {
 	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	ProductMapper productMapper = new ProductMapper();
 	
 	public void selectProduct() throws SQLException {
 		ArrayList<ProductDTO> list = new ArrayList<ProductDTO>();
@@ -22,4 +24,41 @@ public class ProductDAO {
 		System.out.println(" -----------------------------------------------");
 	}
 	
+	public void insertProduct() throws Exception {
+		ProductDTO insertProduct = new ProductDTO();
+		
+		try {
+			while(true) {
+				System.out.println("등록할 제품명을 입력하세요");
+				String pname = br.readLine();
+				
+				if(ProductDupCheck(pname)) { System.out.println("등록할 제품명이 이미 존재합니다"); }
+				else {
+					insertProduct.setPname(pname);
+					break;
+					}
+				}
+				System.out.println("등록할 제품의 재고 수량을 입력해주세요");
+				int pcount = Integer.parseInt(br.readLine());
+				insertProduct.setPcount(pcount);
+				
+				if(productMapper.insertProduct(insertProduct)) {
+					System.out.println("제품 등록 완료");
+				
+				} else {
+					System.out.println("제품 등록 실패");
+					
+				}
+//			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	///////
+	public boolean ProductDupCheck(String pname) {
+		boolean check = productMapper.ProductDupCheck(pname);
+		return check;
+	}
 }

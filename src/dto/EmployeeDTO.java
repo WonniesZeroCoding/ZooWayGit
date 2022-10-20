@@ -13,6 +13,7 @@ public class EmployeeDTO {
 	private String eid; //직원아이디
 	private String epw; //직원비밀번호
 	private String ephone; //직원전화번호
-	private String eplace; //담당구역
+	private String eplace; //담당구역 --> DB는 int 지만 seouladdr에서 실제 이름 가져옴
 	private int estatus; //직원 status (0:퇴사 1:기사  2: 관리자)
+	
 }

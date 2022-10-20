@@ -6,7 +6,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 
+import dto.MemberDTO;
+import dto.OrderDTO;
 import dto.PolicyDTO;
 import dto.TimeDTO;
 
@@ -108,10 +111,71 @@ public class OrderMapper {
 			throw e;
 		}finally {
 			if(pstmt!=null) {pstmt.close();}
-		}
-		
-		
-		
+		}	
 	}
+	/* 로그인한 회원이 주무한 렌탈 목록 전체 리스트 (해지상품 제외)*/
+	   public List<OrderDTO> memberOrderList(MemberDTO member) {
+	      Connection conn = DBAction.getInstance().getConnection();
+	      PreparedStatement pstmt = null;
+	      ResultSet rs = null;
+	      List<OrderDTO> memberOrders = new ArrayList<OrderDTO>();
+
+	      try {
+	         pstmt = conn.prepareStatement("SELECT o.onum, o.mnum, o.vdate, o.tnum, t.tcontent , o.poldate, o.pnum, o.polprice, o.ostatus\r\n"
+	               + "from ORDER o, Time t\r\n"
+	               + "where o.tnum = t.tnum\r\n"
+	               + "and o.mnum=?");
+	         pstmt.setInt(1, member.getMnum());
+	         rs = pstmt.executeQuery();
+
+	         while (rs.next()) {
+	            OrderDTO memberOrder = new OrderDTO();
+	            memberOrder.setOnum(rs.getInt(1));
+	            memberOrder.setMnum(rs.getInt(2));
+	            memberOrder.setVdate(rs.getString(3));
+	            memberOrder.setTnum(rs.getInt(4));
+	            memberOrder.setTcontent(rs.getString(5));
+	            memberOrder.setPoldate(rs.getInt(6));
+	            memberOrder.setPnum(rs.getInt(7));
+	            memberOrder.setPolprice(rs.getInt(8));
+	            memberOrder.setOstatus(rs.getInt(9));
+	            memberOrders.add(memberOrder);
+	         }
+	      } catch (Exception e) {
+	         e.printStackTrace();
+	      } finally {
+	         try {
+	            if (rs != null)
+	               rs.close();
+	            if (pstmt != null)
+	               pstmt.close();
+	         } catch (Exception e2) {
+	            e2.printStackTrace();
+	         }
+	      } // try 끝
+
+	      return memberOrders;
+	   }
+
+	   //로그인 회원이 가진 주문번호에 해당하는지 검사
+	   public boolean memberOrderCheck(int mnum, int onum) {
+	      Connection conn= DBAction.getInstance().getConnection();
+	      PreparedStatement pstmt=null;
+	      ResultSet rs= null;
+	      int check=0;
+	      try {
+	         pstmt=conn.prepareStatement("select count(*) from ORDER where onum=? and mnum=?");
+	         pstmt.setInt(1, onum);
+	         pstmt.setInt(2, mnum);
+	         rs=pstmt.executeQuery();
+	         while(rs.next()) check=rs.getInt(1);
+	         return check>0 ? true:false;
+	         }catch (Exception e){e.printStackTrace();}
+	         finally {
+	            try {if(pstmt!=null) pstmt.close();} 
+	            catch (Exception e2) {e2.printStackTrace();}
+	      }//try 끝
+	      return false;
+	   }
 	
 }

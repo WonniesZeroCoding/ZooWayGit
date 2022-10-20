@@ -4,15 +4,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import dao.EmployeeDAO;
-import dao.EmployeeDAOImpl;
-import dto.MemberDTO;
 
 public class AdminPage {
 	
-	public static void main(String[] args) throws NumberFormatException, IOException {
-		
-		EmployeeDAOImpl employeeDao = new EmployeeDAOImpl();
+	public static void main(String[] args) throws Exception {
+		EmployeeManagementPage employeeManagementPage = new EmployeeManagementPage();
+		ProductManagementPage productManagementPage = new ProductManagementPage();
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	
 //		@SuppressWarnings("null")
@@ -33,13 +30,13 @@ public class AdminPage {
 				int num=Integer.parseInt(br.readLine()); // 선택 번호
 				switch (num) {
 				case 1://상품관리
-					
+					productManagementPage.productMangement();
 					break;
 				case 2:// 회원관리				
 					
 					break;
 				case 3:// 사원관리
-					employeeDao.employeeManagement();
+					employeeManagementPage.employeeManagement();
 					break;
 				case 4:// 렌탈관리
 					
