@@ -4,10 +4,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import dto.EmployeeDTO;
+
 
 public class AdminPage {
 	
-	public static void main(String[] args) throws Exception {
+	public void adminPageView(EmployeeDTO employee) throws Exception {
+		System.out.println("관리자님 반갑습니다.");
 		EmployeeManagementPage employeeManagementPage = new EmployeeManagementPage();
 		ProductManagementPage productManagementPage = new ProductManagementPage();
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -46,11 +49,13 @@ public class AdminPage {
 					break;
 				case 6:// 1:1채팅문의
 					
+		
 					break;
 				case 7: //로그아웃->첫 화면으로
+					employee=null;
 					run = false;
 					break;
-				default:
+				default:	
 					System.out.println("|￣￣￣￣￣￣￣|\r\n"
 									 + "|잘못된번호에요|\r\n"
 									 + "|＿＿＿＿＿＿＿|\r\n"

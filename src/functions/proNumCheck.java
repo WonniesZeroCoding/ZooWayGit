@@ -10,7 +10,7 @@ import mapper.ProductMapper;
 public class proNumCheck {
 	public boolean productCheck(int num) throws SQLException {
 		ArrayList<ProductDTO> list = new ArrayList<ProductDTO>();
-		list = new ProductMapper().SelectAllProduct();//전체 list 받아오기
+		list = new ProductMapper().selectAllProduct();//전체 list 받아오기
 		int[] numbers = new int[list.size()];
 		for(int i = 0; i<list.size();i++) {
 			numbers[i] = list.get(i).getPnum();

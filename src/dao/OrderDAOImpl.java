@@ -17,7 +17,7 @@ public class OrderDAOImpl {
 
 
 	/* 로그인한 회원의 렌탈현황 목록 조회 */
-	public void memberOrderList(MemberDTO member) throws IOException {
+	public List<OrderDTO> memberOrderList(MemberDTO member) throws IOException {
 		System.out.println(member.getMname() + "님의 렌탈 중인 목록 조회");
 		List<OrderDTO> memberOrders = orderMapper.memberOrderList(member);
 		if (memberOrders.size() != 0) {
@@ -57,6 +57,7 @@ public class OrderDAOImpl {
 					"-----------------------------------------------------------------------------------------------");
 			System.out.println("신청한 렌탈이 없습니다.");
 		}
+		return memberOrders;
 
 	}
 	

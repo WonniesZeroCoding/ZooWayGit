@@ -3,7 +3,6 @@ package dao;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.sql.Date;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 import dto.OrderDTO;
@@ -85,7 +84,7 @@ public class OrderDAO {
 			new OrderMapper().MinusCount(num,newCount);
 		}
 	}
-	
+
 	
 	
 }

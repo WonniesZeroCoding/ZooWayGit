@@ -90,9 +90,7 @@ public class OrderMain {
 	    	int[] arr2 = new int[2]; 
 	    	arr2 = new OrderDAO().polSelect();  //policy 받기
 	    	
-	    	
-	    	
-	    	//System.out.println("최종 insert 전 확인");
+//System.out.println("최종 insert 전 확인");
 	    	
 	    	int mnum = member.getMnum();
 //	    	System.out.println(visitDate);//방문날짜

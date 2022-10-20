@@ -5,16 +5,20 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.Connection;
 
+import dao.EmployeeDAOImpl;
 import dao.MemberDAOImpl;
+import dto.EmployeeDTO;
 import dto.MemberDTO;
 import mapper.DBAction;
 
 public class LoginMain {
 	static Connection conn=DBAction.getInstance().getConnection();
-	public static void main(String[] args) throws NumberFormatException, IOException {
+	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		MemberDAOImpl memberdao=new MemberDAOImpl();
+		EmployeeDAOImpl employeedao=new EmployeeDAOImpl();
 		MemberPage memberPage=new MemberPage();
+		AdminPage adminPage = new AdminPage(); 
 		boolean run=true;
 		do{
 			System.out.println(" ✿​━━∞━━∞━━∞━━∞━━∞━━∞━━✿​  MENU ✿​━━∞━━∞━━∞━━∞━━∞━━∞━━✿");
@@ -45,7 +49,17 @@ public class LoginMain {
 					case 4:
 						run=false;
 						break; 
-					case 5:
+					case 5://관리자 또는 기사 로그인
+						EmployeeDTO loginEmployee = employeedao.employeeLogin();
+						if(loginEmployee.getEstatus()==2) {//관리자인 경우
+							adminPage.adminPageView(loginEmployee);
+						}else if(loginEmployee.getEstatus()==3) {//기사인 경우
+							//기사 메인 페이지 필요한 사람이 만드셈
+						}else if(loginEmployee.getEstatus()==1) { //탈퇴한 관리자/기사인 경우
+							System.out.println("탈퇴회원 입니다.");
+						}else if(loginEmployee.getEstatus()==0) {
+							System.out.println("아이디 비밀번호를 확인하세요");
+						}
 						break;
 					default:
 						break;

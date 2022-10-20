@@ -145,4 +145,41 @@ public class EmployeeMapper {
 		}
 		return false;
 	}
+
+	//관리자 또는 기사 로그인
+	public EmployeeDTO employeeLogin(String eid, String epw) {
+		PreparedStatement pstmt=null;
+		ResultSet rs= null;
+		EmployeeDTO employee= new EmployeeDTO();
+		try {
+			Connection conn=DBAction.getInstance().getConnection();
+			pstmt=conn.prepareStatement("SELECT e.emnum, e.eid, e.epw, e.ename, e.ephone, s.Address, e.estatus\r\n"
+					+ " FROM EMPLOYEE e, SEOULADDR s\r\n"
+					+ " where e.eplace = s.AddrNum\r\n"
+					+ "	and eid=? and epw=?");
+			pstmt.setString(1, eid);
+			pstmt.setString(2, epw);
+			rs=pstmt.executeQuery();
+				while(rs.next()) {
+					employee.setEmnum(rs.getInt(1));
+					employee.setEid(rs.getString(2));
+					employee.setEpw(rs.getString(3));
+					employee.setEname(rs.getString(4));
+					employee.setEphone(rs.getString(5));
+					employee.setEplace(rs.getString(6));
+					employee.setEstatus(rs.getInt(7));
+				}	
+				return employee;
+		}catch (Exception e){e.printStackTrace();}
+		finally {
+			try {if(pstmt!=null) pstmt.close();
+				if(rs!=null) rs.close();
+				
+			} 
+			catch (Exception e2) {e2.printStackTrace();}
+		}//try 끝
+
+		//값을 잘 가지고 왔다면 로그인한 employee객체 리턴
+		return null;
+	}
 }

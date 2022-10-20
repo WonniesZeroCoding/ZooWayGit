@@ -18,7 +18,7 @@ public class MemberMapper {
 		MemberDTO member= new MemberDTO();
 		try {
 			Connection conn=DBAction.getInstance().getConnection();
-			pstmt=conn.prepareStatement("select mid,mname,mphone,(select Address from SEOULADDR where AddrNum=maddress1) 'maddress1',maddress2,mstatus,ZOOCAREPLUS from MEMBER where mid=? and mpw=?");
+			pstmt=conn.prepareStatement("select mid,mname,mphone,(select Address from SEOULADDR where AddrNum=maddress1) 'maddress1',maddress2,mstatus,ZOOCAREPLUS,mnum from MEMBER where mid=? and mpw=?");
 			pstmt.setString(1, id);
 			pstmt.setString(2, password);
 			rs=pstmt.executeQuery();
@@ -28,7 +28,11 @@ public class MemberMapper {
 					member.setMphone(rs.getString(3));
 					member.setMaddress1(rs.getString(4));
 					member.setMaddress2(rs.getString(5));
-					member.setMstatus(rs.getInt(6));}	
+					member.setMstatus(rs.getInt(6));
+					member.setZOOCAREPLUS(rs.getInt(7));
+					member.setMnum(rs.getInt(8));
+					
+				}	
 				return member;
 		}catch (Exception e){e.printStackTrace();}
 		finally {

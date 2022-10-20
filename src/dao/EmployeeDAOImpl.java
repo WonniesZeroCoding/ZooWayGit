@@ -8,6 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import dto.EmployeeDTO;
+import dto.MemberDTO;
 import mapper.EmployeeMapper;
 import view.EmployeeManagementPage;
 
@@ -145,6 +146,22 @@ public class EmployeeDAOImpl {
 	public boolean eIdDupCheck(String eid) {
 		boolean check = employeeMapper.eIdDupCheck(eid);
 		return check;
+	}
+	
+	//관리자 또는 기사 로그인
+	public EmployeeDTO employeeLogin() throws IOException {
+		System.out.print("아이디를 입력해주세요");
+		String eid=br.readLine();
+		System.out.print("비밀번호를 입력해주세요");
+		String epw=br.readLine();
+		
+		EmployeeDTO employee =employeeMapper.employeeLogin(eid, epw);
+		if(employee!=null) {
+				return employee;
+		}else if(employee==null){
+				System.out.println("");
+		}
+		return null;
 	}
 
 }
