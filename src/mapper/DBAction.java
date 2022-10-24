@@ -12,7 +12,7 @@ public class DBAction {
 	public DBAction() {
 		try {
 			 Class.forName("com.mysql.cj.jdbc.Driver");
-	         conn=DriverManager.getConnection("jdbc:mysql://zoowaydb.cnwnq4esimiu.us-west-1.rds.amazonaws.com/zooway?useSSL=false","admin","zooway195");
+	         conn=DriverManager.getConnection("jdbc:mysql://zoowaydb.cnwnq4esimiu.us-west-1.rds.amazonaws.com/zooway?useSSL=false&autoReconnect=true","admin","zooway195");
 		} catch (ClassNotFoundException |SQLException e) {e.printStackTrace();	}
 	}
 	

@@ -6,13 +6,11 @@ import java.io.InputStreamReader;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 
 import dto.OrderDTO;
-import dto.TimeDTO;
 import mapper.OrderMapper;
 
 public class calendar {
@@ -20,14 +18,38 @@ public class calendar {
 		int[] arr = new int[3];
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		Calendar cal = Calendar.getInstance();
-    	System.out.println("연도를 입력해 주세요");
+		//현재 날짜 받기
+		LocalDate localnow = LocalDate.now();
+		Date now = java.sql.Date.valueOf(localnow);
+		
+		
+		System.out.println("현재날짜 >> "+ now);
+		int year  = 0;
+		int month = 0;
+		int day = 0;
+		
+		
+		while(true) {
+		
+		System.out.println("연도를 입력해 주세요");
     	System.out.print(">>");
-    	int year = Integer.parseInt(br.readLine());
+    	year = Integer.parseInt(br.readLine());
     	System.out.println("월을 입력해 주세요");
     	System.out.print(">>");
-    	int month = Integer.parseInt(br.readLine());
+    	month = Integer.parseInt(br.readLine());
+    	if(month<1||month>12) {
+			System.out.println("잘못된 날짜 정보를 입력하셨습니다 처음부터 다시 시도해 주세요");
+			continue;
+    	}
     	
     	
+    	
+    	String calyear = String.valueOf(year);
+    	String calmonth = String.valueOf(month);
+    	
+    	
+    	
+		
     	
     	System.out.println("---------["+year+"년 "+month+"월]---------");
 		System.out.println("  일  월   화  수  목   금  토");
@@ -54,66 +76,40 @@ public class calendar {
 		System.out.println("-----------------------------");
     	System.out.println("일을 입력해 주세요");
     	System.out.print(">>");
-		int day = Integer.parseInt(br.readLine());
+		day = Integer.parseInt(br.readLine());
+		if(day>31) {
+			System.out.println("잘못된 날짜 정보를 입력하셨습니다 처음부터 다시 시도해 주세요");
+			continue;
+		}
+		String calDay = null;
+		if((day-9)<=0) {
+			calDay = "0"+String.valueOf(day);
+		}else {
+			calDay = String.valueOf(day);
+		}
+		System.out.println(calyear);
+		System.out.println(calmonth);
+		System.out.println(calDay);
+		
+		
+		LocalDate newLocalDate = LocalDate.parse(calyear+"-"+calmonth+"-"+calDay);
+		
+		Date newDate = java.sql.Date.valueOf(newLocalDate);
+		
+		
+		
+		if(newDate.after(now)) {
+		break;
+		}
+		System.out.println("현재 시간보다 나중 시간을 선택해 주세요");
 
+		}
     	arr[0] = year;
     	arr[1] = month;
     	arr[2] = day;
     	
 		return arr;
 		
-	}
-	public int timeCheck(int year,int month,int day) throws Exception{ //year,month,day를 입력하여 시간번호를 입력받는 메소드
-		//select * from VISIT where vdate = ?+?
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		ArrayList<TimeDTO> list = new ArrayList<TimeDTO>();
-		list = new OrderMapper().TimeSelect(year, month, day);	
-		int[] arr;
-		int num = 0;
-		if(list.size()!=0){//테이블에 하나라도 있을 때
-			arr = new int[list.size()]; //이상한 번호값을 입력할때 방지를 위한 num을 배열에 넣는다
-			System.out.println(" -----------------------------------------------");
-	    	System.out.println("|           "+year+"년"+month+"월"+day+"일의 시간 선택          ");
-	    	System.out.println("|          	번호\t시간          ");
-			for(int i = 0; i<list.size();i++) {
-				arr[i] = list.get(i).getTnum();
-				
-				
-	    	System.out.println("|           "+list.get(i).getTnum()+"\t"+list.get(i).getTcontent()+"시|");
-			}
-			System.out.println(" -----------------------------------------------");
-			Arrays.sort(arr);
-			System.out.print("시간 선택>>>");
-			num = Integer.parseInt(br.readLine());
-			boolean check  = Arrays.binarySearch(arr, num) >= 0;
-			while(!check) {
-				System.out.print("목록에 있는 시간 번호가 아닙니다. 다시 입력해 주세요 >> ");
-				num = Integer.parseInt(br.readLine());
-				check = Arrays.binarySearch(arr, num) >= 0;
-			}
-			
-			
-		}else {//테이블에 하나도 없을때
-			System.out.println(" -----------------------------------------------");
-	    	System.out.println("|           "+year+"년"+month+"월"+day+"일의 시간 선택          ");
-	    	System.out.println("|          	번호\t시간          ");
-	    	System.out.println("|           1 \t 09-12시");
-	    	System.out.println("|           2 \t 12-15시");
-	    	System.out.println("|           3 \t 15-18시");
-			System.out.println(" -----------------------------------------------");
-			System.out.print("시간 선택>>>");
-			while(true) {
-			num = Integer.parseInt(br.readLine());
-			if(num==1||num==2||num==3) {
-				break;
-			}else{
-				System.out.print("목록에 있는 시간 번호가 아닙니다. 다시 입력해 주세요 >> ");
-			}
-			
-			}
-			
-		}
-		return num;
 	}
 	
 	//날짜 비교 메소드
@@ -153,4 +149,31 @@ public class calendar {
       return null;
     
  }
+    //해지일 만들어주는 메소드
+    public String MakeEndDate(String visitdate,int poldate) {
+       OrderMapper ordermapper=new OrderMapper();
+       poldate=poldate/12;
+       //최초방문일 끌어오기
+       //OrderDTO order=ordermapper.getVDATE(oNum);
+       //String vdate =order.getVdate();
+       //System.out.println(visitdate);
+       System.out.println(poldate);
+       
+       
+       Calendar cal = Calendar.getInstance();
+       
+         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+         Date date = null;
+         try {
+             date = df.parse(visitdate);
+         } catch (ParseException e) {
+             e.printStackTrace();
+         }
+         cal.setTime(date);
+         cal.add(Calendar.YEAR, poldate);
+         
+         String realEndDate = df.format(cal.getTime());
+         return realEndDate;
+    }
+	
 }

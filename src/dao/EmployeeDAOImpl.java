@@ -21,7 +21,7 @@ public class EmployeeDAOImpl {
 	public void employeeAllList() throws NumberFormatException, IOException {
 		System.out.println("사원 조회 시작");
 		List<EmployeeDTO> employees = employeeMapper.employeeAllList();
-
+  
 		if (employees.size() != 0) {
 
 			System.out.println(

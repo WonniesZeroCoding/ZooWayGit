@@ -37,7 +37,6 @@ public class AdminPage {
 					break;
 				case 2:// 회원관리				
 					new memberManagementPage();
-
 					break;
 				case 3:// 사원관리
 					employeeManagementPage.employeeManagement();

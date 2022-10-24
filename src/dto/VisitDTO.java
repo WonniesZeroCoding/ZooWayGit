@@ -14,6 +14,5 @@ public class VisitDTO {
 	private int onum; //주문번호
 	private int asnum; //as번호
 	private String vdate; //방문일
-	private int tnum; //시간번호 
 	private int vstatus; //방문status (방문했는지,안했는지)
 }

@@ -11,7 +11,7 @@ public class MemberPage {
 
 	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	MemberOrderPage memberOrderPage = new MemberOrderPage();
-	public void memberPageView(MemberDTO member) throws NumberFormatException, IOException {
+	public void memberPageView(MemberDTO member) throws Exception {
 		
 		System.out.println(member.getMname()+"님 반갑습니다!(´･ω･`)");
 		System.out.println("");
@@ -27,7 +27,7 @@ public class MemberPage {
 			int num=Integer.parseInt(br.readLine()); // 선택 번호
 			switch (num) {
 			case 1://렌탈신청(제품목록으로 이동)
-				
+				new ProductMain(member);
 				break;
 			case 2:// 렌탈현황
 				memberOrderPage.memberOrderPage(member);

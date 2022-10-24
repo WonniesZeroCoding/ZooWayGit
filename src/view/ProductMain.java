@@ -10,8 +10,6 @@ import dto.MemberDTO;
 
 public class ProductMain {
 	
-	
-	
 	public ProductMain(MemberDTO member) throws Exception {
 		System.out.println(" -----------------------------------------------");
 		System.out.println("|           1. 제품목록 2. 뒤로                                   ");

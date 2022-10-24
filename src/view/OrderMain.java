@@ -65,7 +65,6 @@ public class OrderMain {
 	    	System.out.println("|           선택하신 날짜는 "+arr[0]+"년"+arr[1]+"월 "+arr[2]+"일입니다 맞습니까?             ");
 			System.out.println("|           1.확인  2.다른 날짜 선택  3.메인페이지로                 ");
 			System.out.println(" -----------------------------------------------");
-			System.out.print(">>");
 			int num3 = Integer.parseInt(br.readLine());
 	    	if(num3==1) {
 	    		visitDate = arr[0]+"-"+arr[1]+"-"+arr[2];
@@ -74,26 +73,12 @@ public class OrderMain {
 	    		//메인 페이지로
 	    	}
 		}
-	    	while(true) {//시간 테이블에서 시간 받기
-	    	calendar cal = new calendar();
-	    	timeNum = cal.timeCheck(arr[0], arr[1], arr[2]);
-	     	System.out.println(" -----------------------------------------------");
-	    	System.out.println("|           선택하신 시간번호는 "+timeNum+"입니다 맞습니까?");
-			System.out.println("|           1.확인  2.다른 시간 선택  3.메인페이지로     ");
-			System.out.println(" -----------------------------------------------");
-			System.out.print(">>");
 
-	    	int num4 = Integer.parseInt(br.readLine());
-	    	if(num4==1) {//확인을 눌렀을시
-	    		break;
-	    	}if(num4==3) {
-	    		//메인페이지로
-	    	}
-	    	
-	    	}
 	    	int[] arr2 = new int[2]; 
 	    	arr2 = new OrderDAO().polSelect();  //policy 받기
-
+	    	
+//System.out.println("최종 insert 전 확인");
+	    	
 	    	int mnum = member.getMnum();
 //	    	System.out.println(visitDate);//방문날짜
 //	    	System.out.println(timeNum);//시간번호
@@ -102,19 +87,19 @@ public class OrderMain {
 //	    	System.out.println(arr2[1]);//개월당 금액
 //	    	System.out.println(homeNum); //자가 or 방문
 	    	
-	    	new OrderDAO().productMinus(num); //재고 마이너스
+	    	new OrderDAO().productMinus(num); //재고 -
 	    	
-	    	OrderDTO order = new OrderDTO(visitDate,arr2[0]); //visitDate와 개월수 저장
+	    	OrderDTO order = new OrderDTO(visitDate,arr2[0]);
 	    	
-	    	String endDate = new functions.calendar().CompareDate(order); //endDate 받아오기
+	    	String endDate = new functions.calendar().CompareDate(order);
 	    	
 	    	new OrderDAO().insertOrder(mnum,visitDate,timeNum,arr2[0],num,arr2[1],homeNum,endDate); //주문테이블에 추가
 	    	
-	    	new OrderDAO().showResult(mnum, num); // 신청확인내역 띄워주기
+	    	new OrderDAO().showResult(mnum, visitDate); // 신청확인내역 띄워주기
 	    		    	
 	    	int onum = new OrderDAO().selectOrderNum(member.getMnum());//가장 최신 onum 가져오기
 	    	 
-	    	new VisitDAO().insertVisit(mnum,onum,visitDate,timeNum);//VISIT 테이블에추가 
+	    	new VisitDAO().insertVisit(mnum,onum,0,visitDate);//VISIT 테이블에추가 
 	    	
 	    	///이후에 이제.... 그... 기사한테 메세지 보내는 거?? ㅋ
 	    

@@ -6,59 +6,20 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+//import java.util.Date;
 import java.util.List;
 
+import dto.ASDTO;
 import dto.MemberDTO;
 import dto.OrderDTO;
 import dto.PolicyDTO;
-import dto.TimeDTO;
 
 public class OrderMapper {
-	public ArrayList<TimeDTO> TimeSelect(int year, int month, int day) throws Exception {
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		ArrayList<TimeDTO> list = new ArrayList<TimeDTO>();
-		String year1 = String.valueOf(year);
-		String month1 = String.valueOf(month);
-		String day1 = String.valueOf(day);
-
-		try {// 하루라도 시간이 차있으면 나머지 가능한 시간들이 나오고 ,모든 시간이 프리하면 아무것도 나오지 않음
-			String SQL = "select t.tnum,t.tcontent from Time t inner join VISIT v on t.tnum!=v.tnum where vdate =??? and vstatus=1";
-			conn = DBAction.getInstance().getConnection();
-			pstmt = conn.prepareStatement(SQL);
-			pstmt.setString(1, year1 + "-");
-			pstmt.setString(2, month1 + "-");
-			pstmt.setString(3, day1);
-
-			rs = pstmt.executeQuery();
-			while (rs.next()) {
-				int tNum = rs.getInt("tnum");
-				String tContent = rs.getString("tcontent");
-				list.add(new TimeDTO(tNum, tContent));
-			}
-
-		} catch (Exception e) {
-			System.out.println("timeSelect오류");
-			throw e;
-		} finally {
-			try {
-				if (rs != null) {
-					rs.close();
-				}
-				if (pstmt != null) {
-					pstmt.close();
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
-		}
-		return list;
-
-	}
-
+	
 	public ArrayList<PolicyDTO> PolicySelect() throws Exception {
 		Connection conn = null;
 		Statement st = null;
@@ -94,21 +55,20 @@ public class OrderMapper {
 		return list;
 	}
 
-	public void insertOrder(int mnum,Date date,int tnum,int poldate,int pnum,int polprice,int ostatus,Date endDate)throws Exception{
+	public void insertOrder(int mnum,Date date,int poldate,int pnum,int polprice,int ostatus,Date endDate)throws Exception{
 	      Connection conn = null;
 	      PreparedStatement pstmt = null;
 	      try {
-	         String SQL = "insert into `ORDER` values(onum,?,?,?,?,?,?,?,?)";
+	         String SQL = "insert into `ORDER` values(onum,?,?,?,?,?,?,?)";
 	         conn = DBAction.getInstance().getConnection();
 	         pstmt = conn.prepareStatement(SQL);
 	         pstmt.setInt(1, mnum);
 	         pstmt.setDate(2, date);
-	         pstmt.setInt(3, tnum);
-	         pstmt.setInt(4, poldate);
-	         pstmt.setInt(5, pnum);
-	         pstmt.setInt(6, polprice);
-	         pstmt.setInt(7, ostatus);
-	         pstmt.setDate(8, endDate);
+	         pstmt.setInt(3, poldate);
+	         pstmt.setInt(4, pnum);
+	         pstmt.setInt(5, polprice);
+	         pstmt.setInt(6, ostatus);
+	         pstmt.setDate(7, endDate);
 	         pstmt.executeUpdate();
 	      }catch(Exception e) {
 	         System.out.println("insertOrder 오류");
@@ -128,9 +88,11 @@ public class OrderMapper {
 
 		try {
 			pstmt = conn.prepareStatement(
-					"SELECT o.onum, o.mnum, o.vdate, o.tnum, t.tcontent , o.poldate, o.pnum, o.polprice, o.ostatus \r\n"
-							+ " from zooway.ORDER o, Time t \r\n" + " where o.tnum = t.tnum \r\n" + " and o.mnum=?"
-							+ " and o.ostatus!=0");
+					"SELECT onum, mnum, vdate, poldate, pnum, polprice, ostatus, endDate\r\n"
+					+ "from zooway.ORDER \r\n"
+					+ "where mnum=? \r\n"
+					+ "and ostatus!=0 \r\n"
+					+ "and ostatus!=4");
 			pstmt.setInt(1, member.getMnum());
 			rs = pstmt.executeQuery();
 
@@ -139,12 +101,11 @@ public class OrderMapper {
 				memberOrder.setOnum(rs.getInt(1));
 				memberOrder.setMnum(rs.getInt(2));
 				memberOrder.setVdate(rs.getString(3));
-				memberOrder.setTnum(rs.getInt(4));
-				memberOrder.setTcontent(rs.getString(5));
-				memberOrder.setPoldate(rs.getInt(6));
-				memberOrder.setPnum(rs.getInt(7));
-				memberOrder.setPolprice(rs.getInt(8));
-				memberOrder.setOstatus(rs.getInt(9));
+				memberOrder.setPoldate(rs.getInt(4));
+				memberOrder.setPnum(rs.getInt(5));
+				memberOrder.setPolprice(rs.getInt(6));
+				memberOrder.setOstatus(rs.getInt(7));
+				memberOrder.setEndDate(rs.getString(8));
 				memberOrders.add(memberOrder);
 			}
 		} catch (Exception e) {
@@ -189,27 +150,106 @@ public class OrderMapper {
 		} // try 끝
 		return false;
 	}
+	
+	//방문일 끌고오는 메소드
+	public OrderDTO getVDATE(int oNum) {
+		PreparedStatement pstmt=null;
+		ResultSet rs= null;
+		OrderDTO dto= new OrderDTO();
+		try {
+			Connection conn=DBAction.getInstance().getConnection();
+			pstmt=conn.prepareStatement("select vdate,poldate from zooway.ORDER where onum=?");
+			pstmt.setInt(1, oNum);
+			rs=pstmt.executeQuery();
+				while(rs.next()) {
+					dto.setVdate(rs.getString(1));
+					dto.setPoldate(rs.getInt(2));
+					}
+				return dto;
+		}catch (Exception e){e.printStackTrace();}
+		finally {
+			try {if(pstmt!=null) pstmt.close();
+				if(rs!=null) rs.close();
+				
+			} 
+			catch (Exception e2) {e2.printStackTrace();}
+		}//try 끝
+		//값을 못가지고 왔다면 null 리턴
+		return null;
+	}
+	
+	
+	
+	//해지일 끌고오는 메소드
+	public String GetEndDate(int oNum) {
+		PreparedStatement pstmt=null;
+		ResultSet rs= null;
+		String enddate=null;
+		try {
+			Connection conn=DBAction.getInstance().getConnection();
+			pstmt=conn.prepareStatement("select endDate from zooway.ORDER where onum=?");
+			pstmt.setInt(1, oNum);
+			rs=pstmt.executeQuery();
+				while(rs.next()) {
+					enddate=rs.getString(1);
+					}
+				return enddate;
+		}catch (Exception e){e.printStackTrace();}
+		finally {
+			try {if(pstmt!=null) pstmt.close();
+				if(rs!=null) rs.close();
+			} 
+			catch (Exception e2) {e2.printStackTrace();}
+		}//try 끝
+		//값을 못가지고 왔다면 null 리턴
+		return null;
+	}
+	
+	//as신청하는 메소드
+	public int ASService(int onum,ASDTO as) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		Date vdate = Date.valueOf(as.getVdate());
+		try {
+			String SQL = "insert into `AS`(onum,vdate) values(?,?)";
+			conn = DBAction.getInstance().getConnection();
+			pstmt = conn.prepareStatement(SQL);
+			pstmt.setInt(1, onum);
+			pstmt.setDate(2, vdate);
+			pstmt.executeUpdate();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			if(pstmt!=null) {
+				try {
+				pstmt.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}}
+		}
+		
+		return 0;
 
-	public OrderDTO selectResult(int mnum, int pnum) throws Exception {
+	}
+
+	public OrderDTO selectResult(int onum) throws Exception {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		OrderDTO order = null;
 		try {
-			String SQL = "select o.onum,(select pname from PRODUCT where pnum = ?)as pname,o.mnum,o.vdate,o.poldate,o.ostatus,t.tcontent from `ORDER` o inner join Time t on o.tnum = t.tnum where mnum = ?";
+			String SQL = "select o.*,p.pname from `ORDER` o inner join PRODUCT p on o.pnum = p.pnum where onum = ?";
 			conn = DBAction.getInstance().getConnection();
 			pstmt = conn.prepareStatement(SQL);
-			pstmt.setInt(1, pnum);
-			pstmt.setInt(2, mnum);
+			pstmt.setInt(1, onum);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
-				int onum = rs.getInt("onum");
 				String pname = rs.getString("pname");
 				String vdate = String.valueOf(rs.getDate("vdate"));
 				int poldate = rs.getInt("poldate");
 				int ostatus = rs.getInt("ostatus");
-				String tcontent = rs.getString("tcontent");
-				// order = new OrderDTO(onum, pname, vdate, poldate, ostatus, tcontent);
+				order = new OrderDTO(onum, pname, vdate, poldate, ostatus);
 			}
 
 		} catch (Exception e) {
@@ -323,4 +363,56 @@ public class OrderMapper {
 
 		return Onum;
 	}
+	
+	 // 약정해지신청 -> ostatus를 4반납신청으로 변경
+	   public void contractTerminate(int onum) throws Exception {
+	      Connection conn = null;
+	      PreparedStatement pstmt = null;
+	      try {
+	         String SQL = "update `ORDER` set ostatus=4 where onum = ?";
+	         conn = DBAction.getInstance().getConnection();
+	         pstmt = conn.prepareStatement(SQL);
+	         pstmt.setInt(1, onum);
+	         pstmt.executeUpdate();
+
+	      } catch (Exception e) {
+	         System.out.println("반납신청 오류");
+	         throw e;
+	      } finally {
+	         if (pstmt != null) {
+	            pstmt.close();
+	         }
+	      }
+
+	   }
+	   
+	   
+	   // 렌탈 약정 연장
+	   public void contractExtend(int onum, int[] arr, String realEndDate) throws Exception {
+	      Connection conn = null;
+	      PreparedStatement pstmt = null;
+	      int polprice = arr[1];
+	      try {
+	         String SQL = "UPDATE `ORDER`\r\n"
+	               + " SET polprice=polprice+?,\r\n"
+	               + " endDate=?\r\n"
+	               + " WHERE onum=?;";
+	         conn = DBAction.getInstance().getConnection();
+	         pstmt = conn.prepareStatement(SQL);
+	         pstmt.setInt(1, polprice);
+	         pstmt.setString(2, realEndDate);
+	         pstmt.setInt(3, onum);
+	         pstmt.executeUpdate();
+
+	      } catch (Exception e) {
+	         System.out.println("약정연장 실패");
+	         throw e;
+	      } finally {
+	         if (pstmt != null) {
+	            pstmt.close();
+	         }
+	      }
+	   }
+
+	
 }

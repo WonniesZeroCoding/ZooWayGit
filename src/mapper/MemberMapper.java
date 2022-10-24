@@ -77,7 +77,7 @@ public class MemberMapper {
 		return false;
 	}
 	
-	//중복검사
+	//아이디중복검사
 	public boolean IdDupCheck(String id) {
 		Connection conn=DBAction.getInstance().getConnection();
 		PreparedStatement pstmt=null;
@@ -98,6 +98,26 @@ public class MemberMapper {
 		}//try 끝
 		return false;
 	}
+	//전화번호 중복검사
+	public boolean PHDupCheck(String phone) {
+		Connection conn=DBAction.getInstance().getConnection();
+		PreparedStatement pstmt=null;
+		ResultSet rs= null;
+		int check=0;
+		try {
+			pstmt=conn.prepareStatement("select count(*) from MEMBER where mphone=?");
+			pstmt.setString(1, phone);
+			rs=pstmt.executeQuery();
+			while(rs.next()) check=rs.getInt(1);
+			return check>0?true:false; //true가 나오면 중복인거고 false가 나오면 중복이 아닌거
+			}catch (Exception e){e.printStackTrace();}
+			finally {
+				try {if(pstmt!=null) pstmt.close();} 
+				catch (Exception e2) {e2.printStackTrace();}
+		}//try 끝
+		return false;
+	}
+	
 	
 	//주소 유효성 검사
 	public boolean checkAddr(String address) {
@@ -215,7 +235,7 @@ public class MemberMapper {
 			Connection conn=DBAction.getInstance().getConnection();
 			PreparedStatement pstmt=null;
 			try {
-				pstmt=conn.prepareStatement("delete from MEMBER where mid=? and mpw=?");
+				pstmt=conn.prepareStatement("update MEMBER set mstatus=1 where mid=? and mpw=?");
 				pstmt.setString(1, mid);
 				pstmt.setString(2, mpw);
 				return pstmt.executeUpdate(); //성공하면 1 return
@@ -230,7 +250,8 @@ public class MemberMapper {
 			}
 			return 0;
 		}
-		//hamsik~ 모든 회원 전부 가져오기 + address한글로
+	
+
 		public ArrayList<MemberDTO> selectAllMemberAdmin() throws SQLException {
 			Connection conn = null;
 			Statement st = null;
@@ -281,7 +302,6 @@ public class MemberMapper {
 			}
 			
 		}
-	
 
 	
 }

@@ -51,13 +51,13 @@ public class OrderDAO {
 	public void insertOrder(int mnum,String date,int tnum,int poldate,int pnum,int polprice,int ostatus,String endDate) throws Exception{
 		 Date newDate = Date.valueOf(date);
 		 Date newEndDate = Date.valueOf(endDate);
-		 new OrderMapper().insertOrder(mnum, newDate, tnum, poldate, pnum, polprice, ostatus,newEndDate);
+		 new OrderMapper().insertOrder(mnum, newDate, poldate, pnum, polprice, ostatus,newEndDate);
 	}
 	
-	public void showResult(int mnum,int pnum) throws Exception {
-		OrderDTO order = new OrderMapper().selectResult(mnum, pnum);
+	public void showResult(int onum,String date) throws Exception {
+		OrderDTO order = new OrderMapper().selectResult(onum);
 		
-		System.out.println(" -----------------------------------------------");
+		System.out.println(" ———————————————————————");
 		System.out.println("|\t\t주문 내역");
 		System.out.println("|주문번호 : "+order.getOnum());
 		System.out.println("|주문상품 : "+order.getPname());
@@ -67,8 +67,8 @@ public class OrderDAO {
 		}else {
 		System.out.println("|점검상태 : 자가");
 		}
-		System.out.println("|방문일시 : "+order.getVdate()+"일"+order.getTcontent()+"시");
-		System.out.println(" -----------------------------------------------");
+		System.out.println("|방문 설정일시 : "+date);
+		System.out.println(" ———————————————————————");
 		
 		
 		
