@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 //그냥 매번 이걸 이용해서 열어주도록 하자
-
+  
 public class DBAction {
 	private Connection conn;
 	private static DBAction instance;

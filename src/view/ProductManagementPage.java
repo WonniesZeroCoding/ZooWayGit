@@ -10,7 +10,7 @@ import dao.ProductDAO;
 public class ProductManagementPage {
 	
 	public void productMangement() throws Exception {
-		
+	  	
 		while(true) {
 		System.out.println(" -----------------------------------------------");
 		System.out.println("| 1. 제품목록 2. 제품 등록 3. 제품 재고 추가 4. 제품 삭제 0. 뒤로 |");

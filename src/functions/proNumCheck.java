@@ -6,7 +6,7 @@ import java.util.Arrays;
 
 import dto.ProductDTO;
 import mapper.ProductMapper;
-
+  
 public class proNumCheck {
 	public boolean productCheck(int num) throws SQLException {
 		ArrayList<ProductDTO> list = new ArrayList<ProductDTO>();

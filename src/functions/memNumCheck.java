@@ -8,7 +8,7 @@ import dto.MemberDTO;
 import dto.ProductDTO;
 import mapper.MemberMapper;
 import mapper.ProductMapper;
-
+  
 public class memNumCheck {
 	public boolean memberCheck(int num) throws SQLException {
 		ArrayList<MemberDTO> list = new ArrayList<MemberDTO>();

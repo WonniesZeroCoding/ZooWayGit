@@ -16,7 +16,7 @@ public class EmployeeDAOImpl {
 	MemberDAOImpl memberDao = new MemberDAOImpl();
 	EmployeeMapper employeeMapper = new EmployeeMapper();
 	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
+   
 	/* 1-1.전체 사원 목록 조회 */
 	public void employeeAllList() throws NumberFormatException, IOException {
 		System.out.println("사원 조회 시작");

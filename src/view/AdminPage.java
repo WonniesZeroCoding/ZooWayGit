@@ -8,7 +8,7 @@ import dto.EmployeeDTO;
 
 
 public class AdminPage {
-	
+	  
 	public void adminPageView(EmployeeDTO employee) throws Exception {
 		System.out.println("관리자님 반갑습니다.");
 		EmployeeManagementPage employeeManagementPage = new EmployeeManagementPage();
@@ -19,7 +19,7 @@ public class AdminPage {
 //		public void memberPageView(MemberDTO member) throws NumberFormatException, IOException {
 			
 			
-			
+
 			//System.out.println(member.getMname()+"님 반갑습니다!(´･ω･`)");
 			System.out.println("");
 			

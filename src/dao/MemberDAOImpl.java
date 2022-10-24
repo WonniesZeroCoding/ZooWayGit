@@ -13,7 +13,7 @@ import mapper.MemberMapper;
 public class MemberDAOImpl {
 	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	MemberMapper membermapper=new MemberMapper();
-	
+	  
 
 	public MemberDTO MemberLogin() throws IOException{
 		System.out.print("아이디를 입력해주세요");

@@ -101,7 +101,7 @@ public class ProductDAO {
 		System.out.println(" -----------------------------------------------");
 	}
 	
-	
+	  
 	public void plusProductStock() {
 		try {
 

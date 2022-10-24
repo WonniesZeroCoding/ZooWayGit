@@ -13,5 +13,5 @@ public class ASDTO {
 	private String vdate; //방문일  :새로 추가
 	private int poldate; //기간  :새로추가
 	 
-
+  
 }

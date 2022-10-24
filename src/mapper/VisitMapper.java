@@ -6,7 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class VisitMapper {
-
+  
 	public void insertVisit(int mnum, int onum,int asnum, Date vdate) throws Exception {
 		Connection conn = null;
 		PreparedStatement pstmt = null;

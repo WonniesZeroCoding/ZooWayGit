@@ -18,7 +18,7 @@ import mapper.ProductMapper;
 public class OrderMain {
 	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-	
+	  
 	
 	
 	public OrderMain(MemberDTO member) throws Exception {

@@ -5,7 +5,7 @@ import java.io.InputStreamReader;
 
 import dao.MemberDAOImpl;
 import mapper.MemberMapper;
-
+  
 public class memberManagementPage {
 	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	public memberManagementPage() throws Exception{

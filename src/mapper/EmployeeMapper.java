@@ -9,7 +9,7 @@ import java.util.List;
 
 import dto.EmployeeDTO;
 public class EmployeeMapper {
-
+  
 	// 탈퇴한 사원을 제외한 모든 사원 조회
 	public List<EmployeeDTO> employeeAllList() {
 		Connection conn = DBAction.getInstance().getConnection();

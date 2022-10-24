@@ -8,7 +8,7 @@ import dao.MemberDAOImpl;
 import dto.MemberDTO;
 
 public class MemberPage {
-
+  
 	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	MemberOrderPage memberOrderPage = new MemberOrderPage();
 	public void memberPageView(MemberDTO member) throws Exception {

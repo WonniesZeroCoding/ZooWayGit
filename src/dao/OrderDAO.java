@@ -91,6 +91,6 @@ public class OrderDAO {
 			int num = new OrderMapper().selectOrderNum(mnum);
 			return num;
 		}
+	  
 	
-	
-}
+}  

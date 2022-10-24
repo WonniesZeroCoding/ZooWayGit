@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 import dto.MemberDTO;
 
-
+  
 public class MemberMapper {
 	
 	//일반 회원 로그인

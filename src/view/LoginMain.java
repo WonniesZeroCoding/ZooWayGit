@@ -10,7 +10,7 @@ import dao.MemberDAOImpl;
 import dto.EmployeeDTO;
 import dto.MemberDTO;
 import mapper.DBAction;
-
+  
 public class LoginMain {
 	static Connection conn=DBAction.getInstance().getConnection();
 	public static void main(String[] args) throws Exception {
