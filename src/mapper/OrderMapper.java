@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dto.ASDTO;
+import dto.EmployeeDTO;
 import dto.MemberDTO;
 import dto.OrderDTO;
 import dto.PolicyDTO;
@@ -413,6 +414,92 @@ public class OrderMapper {
 	         }
 	      }
 	   }
+		public OrderDTO selectZVA(int onum) throws Exception {
+			Connection conn = null;
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+			OrderDTO ZVA = null;
+			try {
+				String SQL = "select m.ZOOCAREPLUS,m.maddress1,o.* from `ORDER` o inner join MEMBER m on o.mnum=m.mnum where onum = ?";
+				conn = DBAction.getInstance().getConnection();
+				pstmt = conn.prepareStatement(SQL);
+				pstmt.setInt(1, onum);
+				rs = pstmt.executeQuery();
+				
+				while(rs.next()) {
+					int zcp = rs.getInt("ZOOCAREPLUS");
+					int maddress1 = rs.getInt("maddress1");
+					int mnum =rs.getInt("mnum");
+					String vdate = String.valueOf(rs.getDate("vdate"));
+					int poldate = rs.getInt("poldate");
+					int pnum = rs.getInt("pnum");
+					int polprice =rs.getInt("polprice");
+					int ostatus = rs.getInt("ostatus");
+					String endDate = String.valueOf(rs.getDate("endDate"));
+					
+					
+					
+					ZVA = new OrderDTO(zcp,maddress1,onum,mnum,vdate,poldate,pnum,polprice,ostatus,endDate);
+				}
+				
+				
+				
+			}catch(Exception e) {
+				System.out.println("selectZVA 오류");
+				throw e;
+			}finally {
+				if(rs!=null){rs.close();}
+				if(pstmt!=null) {pstmt.close();}
+			}
+			
+			
+			
+			return ZVA;
+		}
 
+		public ArrayList<EmployeeDTO> selectEmployee(OrderDTO ZVA)throws Exception {
+			Connection conn = null;
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+			ArrayList<EmployeeDTO> list = new ArrayList<EmployeeDTO>();
+			try {
+				conn = DBAction.getInstance().getConnection();
+				String SQL = null;
+				
+				if(ZVA.getZcp()==2) {//주케플이 있는 경우
+					System.out.println(Date.valueOf(ZVA.getVdate()));
+					SQL = "select distinct e.*,s.Address from EMPLOYEE e inner join VISIT v inner join SEOULADDR s inner join (select count(*) from VISIT WHERE vdate=? having count(*)<3) as b on  e.eplace = s.AddrNum where eplace = ? and estatus = 3"; 
+					pstmt = conn.prepareStatement(SQL);
+					pstmt.setDate(1,Date.valueOf(ZVA.getVdate()));
+					pstmt.setInt(2, ZVA.getMaddress());
+				}else {
+					SQL = "select distinct e.*,s.Address from EMPLOYEE e inner join VISIT v inner join SEOULADDR s inner join (select count(*) from VISIT WHERE vdate=? having count(*)<3) as b on  e.eplace = s.AddrNum where estatus = 3";
+					pstmt = conn.prepareStatement(SQL);
+					pstmt.setDate(1,Date.valueOf(ZVA.getVdate()));
+				}
+				rs = pstmt.executeQuery();
+				while(rs.next()) {
+					int emnum = rs.getInt("emnum");
+					String eid = rs.getString("eid");
+					String epw = rs.getString("epw");
+					String ename = rs.getString("ename");
+					String ephone = rs.getString("ephone");
+					String eplace = rs.getString("Address");
+					int estatus =rs.getInt("estatus");
+					list.add(new EmployeeDTO(emnum,eid,epw,ename,ephone,eplace,estatus));
+				}
+			
+			
+			
+			}catch(Exception e) {
+				System.out.println("selectEmployee오류");
+				throw e;
+			}finally {
+				if(rs!=null){rs.close();}
+				if(pstmt!=null) {pstmt.close();}
+			}
+			
+			return list;
+		}
 	
 }

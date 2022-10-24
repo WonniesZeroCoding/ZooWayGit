@@ -42,10 +42,12 @@ public class AdminPage {
 					employeeManagementPage.employeeManagement();
 					break;
 				case 4:// 렌탈관리
-					
+					new rentalManagementPage();
+
 					break;
 				case 5:// A/S관리
-					
+					new asManagementpage();
+
 					break;
 				case 6:// 1:1채팅문의
 					
